@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNS - Disaster Nursing Support</title>
+  <link rel="stylesheet" href="app.css">
+
+  <!-- 最低限のCSP -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    frame-src https://www.youtube.com https://player.vimeo.com;
+  ">
+</head>
+<body>
+
+  <header>
+    <h1>DNS</h1>
+    <nav>
+      <a href="#/top">Top</a>
+      <a href="#/settings">Settings</a>
+      <a href="#/list">List</a>
+      <a href="#/history">History</a>
+    </nav>
+  </header>
+
+  <main id="app">
+    <!-- ここに画面が描画される -->
+  </main>
+
+  <footer>
+    <p>※個人情報・患者情報は入力しないでください</p>
+  </footer>
+
+  <script type="module" src="js/router.js"></script>
+</body>
+</html>

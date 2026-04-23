@@ -1,45 +1,35 @@
-const routes = {
-  "/": "pages/top.html",
-  "/settings": "pages/settings.html",
-  "/list": "pages/list.html",
-  "/detail": "pages/detail.html",
-  "/sim": "pages/sim.html",
-  "/history": "pages/history.html"
-};
+const BASE_PATH = "/my-first-app";
 
-async function loadPage(path) {
-  const app = document.getElementById("app");
+function navigate(path) {
+  history.pushState({}, "", BASE_PATH + path);
+  router();
+}
 
-  const file = routes[path] || "pages/top.html";
+function router() {
+  const path = location.pathname.replace(BASE_PATH, "") || "/";
 
-  try {
-    const res = await fetch(file);
-    const html = await res.text();
-    app.innerHTML = html;
-  } catch (e) {
-    app.innerHTML = "<h2>ページ読み込みエラー</h2>";
+  if (path === "/" || path === "") {
+    loadPage("pages/top.html");
+  } else if (path === "/settings") {
+    loadPage("pages/settings.html");
+  } else if (path === "/list") {
+    loadPage("pages/list.html");
+  } else if (path === "/detail") {
+    loadPage("pages/detail.html");
+  } else if (path === "/sim") {
+    loadPage("pages/sim.html");
+  } else if (path === "/history") {
+    loadPage("pages/history.html");
   }
 }
 
-// 初期表示
-window.addEventListener("DOMContentLoaded", () => {
-  loadPage(location.pathname);
-});
+function loadPage(url) {
+  fetch(url)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("app").innerHTML = html;
+    });
+}
 
-// リンククリック制御
-document.addEventListener("click", (e) => {
-  const link = e.target.closest("[data-link]");
-  if (!link) return;
-
-  e.preventDefault();
-
-  const path = link.getAttribute("href");
-
-  history.pushState(null, "", path);
-  loadPage(path);
-});
-
-// 戻る・進む対応
-window.addEventListener("popstate", () => {
-  loadPage(location.pathname);
-});
+window.addEventListener("popstate", router);
+window.addEventListener("DOMContentLoaded", router);

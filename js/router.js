@@ -1,8 +1,5 @@
-const app = document.getElementById("app");
-
-// ルーティング設定
 const routes = {
-  "/top": "pages/top.html",
+  "/": "pages/top.html",
   "/settings": "pages/settings.html",
   "/list": "pages/list.html",
   "/detail": "pages/detail.html",
@@ -10,9 +7,10 @@ const routes = {
   "/history": "pages/history.html"
 };
 
-// 画面読み込み
 async function loadPage(path) {
-  const file = routes[path] || routes["/top"];
+  const app = document.getElementById("app");
+
+  const file = routes[path] || "pages/top.html";
 
   try {
     const res = await fetch(file);
@@ -23,14 +21,25 @@ async function loadPage(path) {
   }
 }
 
-// ハッシュ変更時
-function router() {
-  const hash = location.hash.replace("#", "") || "/top";
-  loadPage(hash);
-}
-
 // 初期表示
-window.addEventListener("load", router);
+window.addEventListener("DOMContentLoaded", () => {
+  loadPage(location.pathname);
+});
 
-// URL変更検知
-window.addEventListener("hashchange", router);
+// リンククリック制御
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("[data-link]");
+  if (!link) return;
+
+  e.preventDefault();
+
+  const path = link.getAttribute("href");
+
+  history.pushState(null, "", path);
+  loadPage(path);
+});
+
+// 戻る・進む対応
+window.addEventListener("popstate", () => {
+  loadPage(location.pathname);
+});

@@ -1,9 +1,10 @@
 const BASE_PATH = "/my-first-app";
 
-function navigate(path) {
+// ← これが超重要（グローバル化）
+window.navigate = function(path) {
   history.pushState({}, "", BASE_PATH + path);
   router();
-}
+};
 
 function router() {
   const path = location.pathname.replace(BASE_PATH, "") || "/";
@@ -20,6 +21,8 @@ function router() {
     loadPage("pages/sim.html");
   } else if (path === "/history") {
     loadPage("pages/history.html");
+  } else {
+    loadPage("pages/top.html");
   }
 }
 
@@ -30,6 +33,8 @@ function loadPage(url) {
       document.getElementById("app").innerHTML = html;
     });
 }
+
+// ← data-link無視してOK（onclickでやるので）
 
 window.addEventListener("popstate", router);
 window.addEventListener("DOMContentLoaded", router);
